@@ -1,0 +1,12 @@
+---
+# tasks file for ansible-secure
+
+# Update system
+- name: Update APT package list
+  apt:
+    update_cache: yes
+
+- include_tasks: tasks/fail2ban.yml
+- include_tasks: tasks/firewall.yml
+- include_tasks: tasks/ssh_secure.yml
+- include_tasks: tasks/create_user.yml

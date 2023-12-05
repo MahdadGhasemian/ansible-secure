@@ -1,0 +1,15 @@
+galaxy_info:
+  author: Mahdad Ghasemian
+  description: Essential Security For First 5 Minutes On A Server
+  license: "license (BSD, MIT)"
+  min_ansible_version: 2.1
+  platforms:
+    - name: Ubuntu
+      versions:
+        - all
+  galaxy_tags:
+    - server
+    - security
+    - first 5 minutes
+
+dependencies: []

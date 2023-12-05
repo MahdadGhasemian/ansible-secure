@@ -1,0 +1,29 @@
+---
+# Enable Firewall
+- name: Install UFW
+  apt:
+    name: ufw
+    state: present
+
+- name: Allow specified external ports
+  ufw:
+    rule: allow
+    port: "{{ item }}"
+  loop: "{{ external_ports }}"
+  notify:
+    - restart ufw
+
+- name: Allow specified external ports range
+  ufw:
+    rule: allow
+    port: "{{ item.range }}"
+    proto: "{{ item.proto }}"
+  loop: "{{ external_range_ports }}"
+  notify:
+    - restart ufw
+
+- name: Enable UFW
+  ufw:
+    state: enabled
+  notify:
+    - restart ufw

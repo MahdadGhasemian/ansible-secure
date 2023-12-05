@@ -1,0 +1,23 @@
+---
+# Secure ssh connection
+- name: Make sure SSH is secure.
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    state: present
+    validate: "sshd -T -f %s"
+  with_items:
+    - regexp: "^PasswordAuthentication"
+      line: "PasswordAuthentication no"
+    - regexp: "^X11Forwarding"
+      line: "X11Forwarding no"
+    - regexp: "^MaxAuthTries"
+      line: "MaxAuthTries 5"
+    - regexp: "^AuthorizedKeysFile"
+      line: "AuthorizedKeysFile .ssh\/authorized_keys"
+    - regexp: "^PermitRootLogin"
+      line: "PermitRootLogin no"
+    - regexp: "^Port"
+      line: "Port {{ ssh_port }}"
+  notify: restart ssh

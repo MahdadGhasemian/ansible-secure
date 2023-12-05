@@ -1,0 +1,28 @@
+---
+# Create user
+- name: Add user {{ server_user }}.
+  user:
+    name: "{{ server_user }}"
+
+- name: Create .ssh directory
+  file:
+    path: "{{ home_path }}/.ssh"
+    state: directory
+    mode: "0700"
+
+- name: Copy test config file
+  copy:
+    src: "{{ user_authorized_key_path }}"
+    dest: "{{ home_path }}/.ssh/authorized_keys"
+    mode: "0600"
+
+- name: Change ownership of home directory
+  command: chown {{ server_user }}:{{ server_user }} "{{ home_path }}" -R
+
+- name: Add sudo group rights for deployment user.
+  lineinfile:
+    dest: /etc/sudoers
+    regexp: "^{{ server_user }}"
+    line: "{{ server_user }} ALL=(ALL) NOPASSWD: ALL"
+    state: present
+    validate: "visudo -cf %s"

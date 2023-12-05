@@ -1,0 +1,33 @@
+---
+# it will ban attackers for 10 minutes – after 5 failed login attempts within 10 minutes
+- name: Install Fail2Ban
+  apt:
+    name: fail2ban
+    state: present
+  tags:
+    - fail2ban
+
+- name: Create jail.local file if not exists
+  file:
+    path: /etc/fail2ban/jail.local
+    state: touch
+
+- name: Configure Fail2Ban for SSH
+  lineinfile:
+    path: /etc/fail2ban/jail.local
+    line: |
+      [sshd]
+      enabled = true
+      banaction = iptables-multiport
+  notify:
+    - restart fail2ban
+  tags:
+    - fail2ban
+
+- name: Enable Fail2Ban service
+  systemd:
+    name: fail2ban
+    enabled: yes
+    state: started
+  tags:
+    - fail2ban
