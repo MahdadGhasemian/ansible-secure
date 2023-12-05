@@ -14,7 +14,7 @@ home_path: "/home/{{ server_user }}"
 
 # SSH
 ssh_port: 2220
-user_authorized_key_path: "files//id_rsa.pub"
+user_authorized_key_path: "files/id_rsa.pub"
 
 # Firewall
 external_ports:
